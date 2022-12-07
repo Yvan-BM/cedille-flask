@@ -2,8 +2,9 @@ import transformers
 import torch
 import convert
 
-transformers.models.gptj.modeling_gptj.GPTJBlock = convert.GPTJBlock
 device = "cuda:0" if torch.cuda.is_available() else "cpu"
+if device == "cuda:0":
+    transformers.models.gptj.modeling_gptj.GPTJBlock = convert.GPTJBlock
 
 def init():
     global model
@@ -14,7 +15,12 @@ def init():
     print("done")
 
     print("Model loading on cpu...")
-    model = convert.GPTJForCausalLM.from_pretrained("yvan237/cedille-GPT-J-6B-8bit")
+    if device == "cuda:0":
+        print("convert version...")
+        model = convert.GPTJForCausalLM.from_pretrained("yvan237/cedille-GPT-J-6B-8bit")
+    else:
+        print("initial version...")
+        model = transformers.GPTJForCausalLM.from_pretrained("yvan237/cedille-GPT-J-6B-8bit")
     print("done")
     
     if device == "cuda:0":

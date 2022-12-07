@@ -5,6 +5,6 @@ import requests
 
 model_inputs = {'prompt': 'Je suis un jeune étudiant en science de la'}
 
-res = requests.post('gcr.io/vigilant-sunup-331521/generate', data = model_inputs)
+res = requests.post('http://0.0.0.0:80/generate', data = model_inputs)
 
 print(res.json())
