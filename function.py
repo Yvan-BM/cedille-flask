@@ -42,7 +42,7 @@ def inference(prompt):
     input_tokens = {key: value.to(device) for key, value in input_tokens.items()}
 
     # Run the model
-    output = model.generate(**input_tokens, min_length=100, max_length=100, do_sample=True)
+    output = model.generate(**input_tokens, min_length=14, max_length=14, do_sample=True)
 
     # Decode output token
     output_text = tokenizer.decode(output[0], skip_special_tokens=True)
