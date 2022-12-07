@@ -10,17 +10,15 @@ app = Flask(__name__)
 # Reference your preloaded global model variable here.
 @app.route('/generate', methods=['POST'])
 def generate():
-    print("request launch")
+    
     if request.method == 'POST':
 
         # Parse out your arguments
-        print("request received")
         prompt = request.form.get('prompt')
         
         if prompt == None:
             return {'message': "No prompt provided"}
         
-        print("request processing")
         result = usr_src.inference(prompt.strip())
 
         # Return the results as a dictionary
@@ -29,4 +27,4 @@ def generate():
 
 
 if __name__ == '__main__':
-    app.run()
+    app.run(host='127.0.0.1', port=8087, debug=True)
