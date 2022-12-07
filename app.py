@@ -7,7 +7,10 @@ usr_src.init()
 
 app = Flask(__name__)
 
-# Reference your preloaded global model variable here.
+@app.route('/', methods=['GET'])
+def index():
+    return 'Hello World!'
+
 @app.route('/generate', methods=['POST'])
 def generate():
     
