@@ -3,8 +3,8 @@ import torch
 import convert
 
 device = "cuda:0" if torch.cuda.is_available() else "cpu"
-if device == "cuda:0":
-    transformers.models.gptj.modeling_gptj.GPTJBlock = convert.GPTJBlock
+
+transformers.models.gptj.modeling_gptj.GPTJBlock = convert.GPTJBlock
 
 def init():
     global model
@@ -15,12 +15,7 @@ def init():
     print("done")
 
     print("Model loading on cpu...")
-    if device == "cuda:0":
-        print("convert version...")
-        model = convert.GPTJForCausalLM.from_pretrained("yvan237/cedille-GPT-J-6B-8bit")
-    else:
-        print("initial version...")
-        model = transformers.GPTJForCausalLM.from_pretrained("yvan237/cedille-GPT-J-6B-8bit")
+    model = convert.GPTJForCausalLM.from_pretrained("yvan237/cedille-GPT-J-6B-8bit")
     print("done")
     
     if device == "cuda:0":
@@ -36,16 +31,21 @@ def inference(prompt):
     if prompt == None:
         return {'message': "No prompt provided"}
     
-    prompt = "Je suis un jeune étudiant en"
+    # prompt = "Je suis un jeune étudiant en"
     # Tokenize input
+    print("request tokenize")
     input_tokens = tokenizer(prompt, return_tensors='pt')
-    input_tokens = {key: value.to(device) for key, value in input_tokens.items()}
+    input_tokens = {key: value for key, value in input_tokens.items()}
 
     # Run the model
-    output = model.generate(**input_tokens, min_length=100, max_length=100, do_sample=True)
+    print("request generate")
+    output = model.generate(**input_tokens, min_length=18, max_length=20, do_sample=True)
+    print("done")
 
     # Decode output token
+    print("request decode")
     output_text = tokenizer.decode(output[0], skip_special_tokens=True)
+    print("done")
 
     result = {"output": output_text}
 
