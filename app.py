@@ -7,8 +7,8 @@ usr_src.init()
 
 app = Flask(__name__)
 
-@app.route('/', methods=['GET'])
-def index():
+@app.route('/')
+def hello():
     return 'Hello World!'
 
 @app.route('/generate', methods=['POST'])
